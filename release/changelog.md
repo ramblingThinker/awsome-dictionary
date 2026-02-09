@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.7
+- Fixed release workflow race by publishing assets from a single final job.
+- Added artifact download and asset listing debug step before GitHub release publish.
+- Ensures `.xpi` and `.dmg` are attached together reliably for tag releases.
+
 ## 1.1.6
 - Added macOS-first lookup path via Native Messaging with API fallback.
 - Added popup diagnostics (`Check macOS Native`) and setup shortcut for native host troubleshooting.
