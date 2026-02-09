@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('open-settings').onclick = () => {
     browser.runtime.openOptionsPage();
   };
+  document.getElementById('open-native-setup').onclick = () => {
+    window.open('https://github.com/ramblingThinker/awsome-dictionary/blob/main/native/macos/SETUP.md', '_blank', 'noopener');
+  };
+  document.getElementById('check-native').onclick = () => {
+    checkNativeHost();
+  };
   document.getElementById('clear-history').onclick = () => {
     clearHistory();
   };
@@ -29,24 +35,101 @@ async function searchWord() {
 
   try {
     const response = await browser.runtime.sendMessage({ action: 'define', word });
-    renderMultilineText(resultDiv, response.definition);
+    renderResult(resultDiv, response);
     await loadHistory();
   } catch (error) {
-    resultDiv.textContent = 'Unable to fetch definition right now.';
+    renderResult(resultDiv, {
+      source: 'unavailable',
+      definition: 'Unable to fetch definition right now.'
+    });
   } finally {
     searchButton.disabled = false;
   }
 }
 
+function renderResult(container, response) {
+  container.textContent = '';
+
+  const sourceLabel = formatSourceLabel(response);
+  if (sourceLabel) {
+    const metaRow = document.createElement('div');
+    metaRow.className = 'result-meta';
+
+    const sourceBadge = document.createElement('span');
+    sourceBadge.className = `result-source result-source-${response.source || 'default'}`;
+    sourceBadge.textContent = sourceLabel;
+    metaRow.appendChild(sourceBadge);
+    container.appendChild(metaRow);
+  }
+
+  const body = document.createElement('div');
+  body.className = 'result-body';
+  renderMultilineText(body, response.definition);
+  container.appendChild(body);
+}
+
 function renderMultilineText(container, text) {
   container.textContent = '';
-  const lines = String(text || '').split('\n');
+  const lines = splitDefinitionLines(text);
   lines.forEach((line, index) => {
     if (index > 0) {
       container.appendChild(document.createElement('br'));
     }
     container.appendChild(document.createTextNode(line));
   });
+}
+
+function splitDefinitionLines(text) {
+  return String(text || '')
+    .split(/(?:\r?\n|<br\s*\/?>)/gi)
+    .map((line) => decodeHtmlEntities(line.trim()))
+    .filter(Boolean);
+}
+
+function decodeHtmlEntities(value) {
+  return value.replace(/&(#x?[0-9a-fA-F]+|amp|lt|gt|quot|apos|#39|nbsp);/g, (entity, code) => {
+    switch (code.toLowerCase()) {
+      case 'amp':
+        return '&';
+      case 'lt':
+        return '<';
+      case 'gt':
+        return '>';
+      case 'quot':
+        return '"';
+      case 'apos':
+      case '#39':
+        return "'";
+      case 'nbsp':
+        return ' ';
+      default:
+        if (code[0] === '#') {
+          const isHex = code[1].toLowerCase() === 'x';
+          const numeric = parseInt(code.slice(isHex ? 2 : 1), isHex ? 16 : 10);
+          if (!Number.isNaN(numeric)) {
+            return String.fromCodePoint(numeric);
+          }
+        }
+        return entity;
+    }
+  });
+}
+
+function formatSourceLabel(response) {
+  if (response.source === 'native') {
+    return 'macOS dictionary';
+  }
+  if (response.source === 'live') {
+    return 'API';
+  }
+  if (response.source === 'cache') {
+    const mins = Number(response.cacheAgeMinutes || 0);
+    return mins > 0 ? `Offline cache • ${mins}m` : 'Offline cache';
+  }
+  if (response.source === 'unavailable') {
+    return 'Network unavailable';
+  }
+  return '';
 }
 
 async function loadHistory() {
@@ -73,58 +156,17 @@ async function clearHistory() {
   await loadHistory();
 }
 
-const style = document.createElement('style');
-style.textContent = `
-  #top-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+async function checkNativeHost() {
+  const statusEl = document.getElementById('native-status');
+  statusEl.className = 'native-status checking';
+  statusEl.textContent = 'Checking native host...';
+
+  try {
+    const result = await browser.runtime.sendMessage({ action: 'check_native_host' });
+    statusEl.className = result.ok ? 'native-status ok' : 'native-status error';
+    statusEl.textContent = result.message || 'Native host check completed.';
+  } catch (error) {
+    statusEl.className = 'native-status error';
+    statusEl.textContent = 'Native host check failed.';
   }
-  #open-settings {
-    border: 1px solid #d0d7de;
-    border-radius: 8px;
-    background: #ffffff;
-    color: #334155;
-    font-size: 12px;
-    padding: 6px 10px;
-    cursor: pointer;
-  }
-  #open-settings:hover {
-    background: #f8fafc;
-  }
-  #history-container {
-    margin-top: 20px;
-  }
-  #history-container h2 {
-    font-size: 16px;
-    margin: 0 0 8px;
-    color: #5f6368;
-  }
-  #clear-history {
-    background: none;
-    border: none;
-    color: #4285f4;
-    cursor: pointer;
-    font-size: 12px;
-    padding: 0;
-    float: right;
-  }
-  #history-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 150px;
-    overflow-y: auto;
-  }
-  #history-list li {
-    padding: 8px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-  }
-  #history-list li:hover {
-    background-color: #f1f3f4;
-  }
-`;
-document.head.appendChild(style);
+}

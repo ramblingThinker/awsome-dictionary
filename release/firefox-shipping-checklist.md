@@ -10,6 +10,7 @@ Use this checklist before each AMO submission.
 ## 2) Quality gate
 1. Run `npm run ship:firefox`.
 2. Confirm `.xpi` artifact exists in `dist/` and includes only extension runtime files.
+3. (Optional macOS helper release file) Run `npm run package:macos-native` and confirm `.dmg` exists in `dist/macOS_native/`.
 
 ## 3) AMO listing assets
 1. Summary + long description: `release/amo-description.md`.
@@ -29,3 +30,4 @@ Use this checklist before each AMO submission.
 1. Track reviewer feedback and respond using templates in `release/amo-review-response-templates.md`.
 2. Create release tag from `manifest.json` version: `npm run release:tag`.
 3. Push release tag: `npm run release:tag:push`.
+4. Confirm GitHub release assets include both `.xpi` and macOS native installer `.dmg`.

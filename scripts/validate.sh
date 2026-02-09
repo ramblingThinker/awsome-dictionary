@@ -21,6 +21,7 @@ jq -e '.browser_specific_settings.gecko.strict_min_version == "140.0"' "$MANIFES
 jq -e '.browser_specific_settings.gecko_android.strict_min_version == "142.0"' "$MANIFEST" >/dev/null
 jq -e '.permissions | index("contextMenus")' "$MANIFEST" >/dev/null
 jq -e '.permissions | index("storage")' "$MANIFEST" >/dev/null
+jq -e '.permissions | index("nativeMessaging")' "$MANIFEST" >/dev/null
 jq -e '.host_permissions | index("https://api.dictionaryapi.dev/*")' "$MANIFEST" >/dev/null
 jq -e '.content_scripts[0].matches | index("http://*/*")' "$MANIFEST" >/dev/null
 jq -e '.content_scripts[0].matches | index("https://*/*")' "$MANIFEST" >/dev/null

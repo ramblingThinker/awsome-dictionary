@@ -67,3 +67,16 @@ test("renderBubbleContent shows cache badge when source is cache", () => {
   assert.ok(badge);
   assert.match(badge.textContent, /Offline cache/);
 });
+
+test("renderBubbleContent shows API badge when source is live", () => {
+  const window = createHarness();
+  const bubble = window.document.createElement("div");
+
+  window.renderBubbleContent(bubble, "WORD<br>/wɜːd/", {
+    source: "live"
+  });
+
+  const badge = bubble.querySelector(".dict-badge-live");
+  assert.ok(badge);
+  assert.equal(badge.textContent, "API");
+});

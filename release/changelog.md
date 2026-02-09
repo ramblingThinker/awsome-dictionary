@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.1.7
+- Fixed release workflow race by publishing assets from a single final job.
+- Added artifact download and asset listing debug step before GitHub release publish.
+- Ensures `.xpi` and `.dmg` are attached together reliably for tag releases.
+
+## 1.1.6
+- Added macOS-first lookup path via Native Messaging with API fallback.
+- Added popup diagnostics (`Check macOS Native`) and setup shortcut for native host troubleshooting.
+- Improved native dictionary rendering into structured bubble sections (part of speech, numbered senses, phrases, origin).
+- Added source badges in popup and bubble (`API`, `macOS dictionary`, `Offline cache`, `Network unavailable`).
+- Improved bubble interaction so users can scroll and copy long definitions without auto-close interruptions.
+- Increased cache retention limits (entries, TTL, and per-entry text budget).
+- Added macOS native host source + setup docs + install/uninstall scripts.
+- Added macOS native installer DMG packaging script and CI release publishing for `.dmg` alongside `.xpi`.
+- Refined popup UI layout and visual hierarchy for a cleaner extension experience.
+
 ## 1.1.5
 - Updated Firefox minimum versions for `data_collection_permissions` compatibility:
   - Desktop `gecko.strict_min_version` to `140.0`

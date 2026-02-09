@@ -4,17 +4,88 @@
     <meta charset="UTF-8">
     <title>Dictionary</title>
     <style>
-        body {
-            width: 350px;
-            padding: 20px;
-            font-family: 'Google Sans', 'Segoe UI', Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #202124;
+        :root {
+            --bg: #f2f7fb;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #475569;
+            --line: #d8e5ee;
+            --primary: #0f4c81;
+            --primary-strong: #0b3d67;
+            --teal: #0f766e;
+            --danger: #991b1b;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 9px;
         }
-        h1 {
+        body {
+            width: 380px;
+            margin: 0;
+            padding: 0;
+            font-family: "Avenir Next", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background:
+              radial-gradient(circle at 8% -30%, #d6f3f3 0%, transparent 44%),
+              radial-gradient(circle at 92% -20%, #dbe9ff 0%, transparent 40%),
+              var(--bg);
+        }
+        .app {
+            padding: 16px;
+            display: grid;
+            gap: 12px;
+        }
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+            padding: 14px;
+        }
+        #top-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .title-group h1 {
+            margin: 0;
             font-size: 20px;
-            margin: 0 0 16px;
-            color: #5f6368;
+            line-height: 1.15;
+            letter-spacing: 0.01em;
+            color: #0b3558;
+        }
+        .subtitle {
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+        #top-actions {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
+        #check-native,
+        #open-native-setup,
+        #open-settings {
+            border: 1px solid #cfdbe4;
+            border-radius: var(--radius-sm);
+            background: #ffffff;
+            color: #334155;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 6px 9px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        #check-native:hover,
+        #open-native-setup:hover,
+        #open-settings:hover {
+            background: #f7fbfe;
+        }
+        #search-wrap {
+            display: grid;
+            gap: 10px;
+            margin-top: 12px;
         }
         #search-container {
             display: flex;
@@ -22,57 +93,167 @@
         }
         #word {
             flex-grow: 1;
-            padding: 12px;
-            border: 1px solid #dfe1e5;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 11px 12px;
+            border: 1px solid #c6d7e3;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
             outline: none;
-            transition: box-shadow 0.2s;
+            transition: box-shadow 0.2s, border-color 0.2s;
+            background: #fcfeff;
         }
         #word:focus {
-            border-color: #8ab4f8;
-            box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.4);
+            border-color: #69a2cf;
+            box-shadow: 0 0 0 3px rgba(76, 132, 176, 0.2);
         }
         #search {
-            padding: 12px 20px;
-            background: #4285f4;
+            padding: 11px 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: filter 0.2s;
         }
         #search:hover {
-            background: #3367d6;
+            filter: brightness(1.05);
+        }
+        #native-status {
+            min-height: 18px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+        #native-status.ok {
+            color: var(--teal);
+        }
+        #native-status.error {
+            color: var(--danger);
+        }
+        #native-status.checking {
+            color: #334155;
         }
         #result {
-            margin-top: 20px;
-            padding: 16px;
-            background: #ffffff;
-            border: 1px solid #dfe1e5;
-            border-radius: 8px;
-            min-height: 50px;
+            margin-top: 4px;
+            padding: 12px;
+            background: #fbfdff;
+            border: 1px solid #d5e4ee;
+            border-radius: var(--radius-md);
+            min-height: 70px;
             line-height: 1.6;
+            font-size: 13px;
+            color: #0f172a;
+            max-height: 260px;
+            overflow: auto;
+            user-select: text;
+        }
+        .result-meta {
+            margin-bottom: 8px;
+        }
+        .result-source {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .result-source-live {
+            background: rgba(66, 133, 244, 0.15);
+            color: #1d4ed8;
+        }
+        .result-source-native {
+            background: rgba(14, 165, 164, 0.16);
+            color: #0f766e;
+        }
+        .result-source-cache {
+            background: rgba(234, 179, 8, 0.16);
+            color: #854d0e;
+        }
+        .result-source-unavailable {
+            background: rgba(239, 68, 68, 0.14);
+            color: #991b1b;
+        }
+        #history-container {
+            margin-top: 0;
+        }
+        .history-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        #history-container h2 {
+            font-size: 15px;
+            margin: 0;
+            color: #24425b;
+        }
+        #clear-history {
+            background: none;
+            border: none;
+            color: #0f4c81;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0;
+            font-weight: 600;
+        }
+        #history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 180px;
+            overflow-y: auto;
+            display: grid;
+            gap: 6px;
+        }
+        #history-list li {
+            padding: 8px 10px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 1px solid #d9e7f0;
+            background: #ffffff;
+            font-size: 13px;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        #history-list li:hover {
+            background-color: #f1f8fd;
+            border-color: #b7d3e6;
         }
     </style>
 </head>
 <body>
-    <div id="top-row">
-        <h1>Dictionary</h1>
-        <button id="open-settings" type="button" title="Open settings">Settings</button>
-    </div>
-    <div id="search-container">
-        <input id="word" type="text" placeholder="Enter a word..." autocomplete="off" spellcheck="false">
-        <button id="search" type="button">Search</button>
-    </div>
-    <div id="result">Enter a word to get its definition.</div>
+    <main class="app">
+        <section class="panel">
+            <div id="top-row">
+                <div class="title-group">
+                    <h1>Dictionary</h1>
+                    <div class="subtitle">Quick meaning lookup with source tracking</div>
+                </div>
+                <div id="top-actions">
+                    <button id="check-native" type="button" title="Check macOS native dictionary host">Check macOS</button>
+                    <button id="open-native-setup" type="button" title="Open setup instructions">Setup</button>
+                    <button id="open-settings" type="button" title="Open settings">Settings</button>
+                </div>
+            </div>
+            <div id="search-wrap">
+                <div id="search-container">
+                    <input id="word" type="text" placeholder="Enter a word..." autocomplete="off" spellcheck="false">
+                    <button id="search" type="button">Search</button>
+                </div>
+                <div id="native-status" aria-live="polite"></div>
+                <div id="result">Enter a word to get its definition.</div>
+            </div>
+        </section>
 
-    <div id="history-container">
-        <h2>History</h2>
-        <button id="clear-history" type="button">Clear</button>
-        <ul id="history-list"></ul>
-    </div>
+        <section class="panel" id="history-container">
+            <div class="history-top">
+                <h2>History</h2>
+                <button id="clear-history" type="button">Clear</button>
+            </div>
+            <ul id="history-list"></ul>
+        </section>
+    </main>
     <script src="popup.js"></script>
 </body>
 </html>

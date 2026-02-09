@@ -62,14 +62,18 @@ function handleSelectionChange() {
   if (!settings.autoCloseOnSelectionClear) {
     return;
   }
-  const text = window.getSelection()?.toString().trim();
-  if (!text) {
+  const selection = window.getSelection();
+  const text = selection?.toString().trim();
+  if (!text && !isSelectionInsideBubble(selection)) {
     removeBubble();
   }
 }
 
-function handleUserInteraction() {
+function handleUserInteraction(event) {
   if (!settings.autoCloseOnInteraction) {
+    return;
+  }
+  if (isEventInsideBubble(event)) {
     return;
   }
   removeBubble();
@@ -78,6 +82,12 @@ function handleUserInteraction() {
 function handleKeydown(event) {
   if (event.key === 'Escape') {
     removeBubble();
+    return;
+  }
+  if (isEventInsideBubble(event) || isSelectionInsideBubble(window.getSelection())) {
+    return;
+  }
+  if ((event.metaKey || event.ctrlKey) && ['c', 'x', 'a'].includes(String(event.key || '').toLowerCase())) {
     return;
   }
   handleUserInteraction();
@@ -98,7 +108,24 @@ function handlePointerInteraction(event) {
 
 function isEventInsideBubble(event) {
   const bubble = document.getElementById('dict-bubble');
-  return Boolean(bubble && event?.target && bubble.contains(event.target));
+  if (!bubble || !event?.target) {
+    return false;
+  }
+  const target = event.target;
+  if (target instanceof window.Node) {
+    return bubble.contains(target);
+  }
+  return false;
+}
+
+function isSelectionInsideBubble(selection) {
+  const bubble = document.getElementById('dict-bubble');
+  if (!bubble || !selection) {
+    return false;
+  }
+  const anchor = selection.anchorNode;
+  const focus = selection.focusNode;
+  return Boolean((anchor && bubble.contains(anchor)) || (focus && bubble.contains(focus)));
 }
 
 function isEditableTarget(target) {
@@ -171,11 +198,21 @@ function renderBubbleContent(bubble, definition, meta = {}) {
   brand.className = 'dict-brand';
   brand.textContent = 'Dictionary';
 
-  if (meta.source === 'cache') {
+  if (meta.source === 'live') {
+    const badge = document.createElement('span');
+    badge.className = 'dict-badge dict-badge-live';
+    badge.textContent = 'API';
+    brand.appendChild(badge);
+  } else if (meta.source === 'cache') {
     const badge = document.createElement('span');
     badge.className = 'dict-badge dict-badge-cache';
     const mins = Number(meta.cacheAgeMinutes || 0);
     badge.textContent = mins > 0 ? `Offline cache • ${mins}m` : 'Offline cache';
+    brand.appendChild(badge);
+  } else if (meta.source === 'native') {
+    const badge = document.createElement('span');
+    badge.className = 'dict-badge dict-badge-native';
+    badge.textContent = 'macOS dictionary';
     brand.appendChild(badge);
   } else if (meta.source === 'unavailable') {
     const badge = document.createElement('span');
@@ -420,6 +457,10 @@ function announceBubbleStatus(meta) {
     region.textContent = 'Network unavailable for dictionary lookup.';
     return;
   }
+  if (meta.source === 'native') {
+    region.textContent = 'Definition from macOS dictionary.';
+    return;
+  }
   region.textContent = 'Definition loaded.';
 }
 
@@ -529,6 +570,14 @@ function injectStylesOnce() {
     .dict-badge-cache {
       background: rgba(234, 179, 8, 0.16);
       color: #854d0e;
+    }
+    .dict-badge-live {
+      background: rgba(66, 133, 244, 0.15);
+      color: #1d4ed8;
+    }
+    .dict-badge-native {
+      background: rgba(14, 165, 164, 0.16);
+      color: #0f766e;
     }
     .dict-badge-unavailable {
       background: rgba(239, 68, 68, 0.14);
