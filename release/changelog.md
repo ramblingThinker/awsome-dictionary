@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4
+- Added required Firefox data consent key: `browser_specific_settings.gecko.data_collection_permissions`.
+- Added manifest validation check for Gecko `data_collection_permissions.required`.
+
 ## 1.1.3
 - Added required Firefox MV3 add-on ID in `browser_specific_settings.gecko.id`.
 - Added manifest validation check for required Gecko add-on ID.

@@ -16,6 +16,7 @@ jq -e '.action.default_popup | type == "string" and length > 0' "$MANIFEST" >/de
 jq -e '.icons | type == "object" and length > 0' "$MANIFEST" >/dev/null
 jq -e '.options_ui.page | type == "string" and length > 0' "$MANIFEST" >/dev/null
 jq -e '.browser_specific_settings.gecko.id | type == "string" and length > 0' "$MANIFEST" >/dev/null
+jq -e '.browser_specific_settings.gecko.data_collection_permissions.required | type == "array" and index("none")' "$MANIFEST" >/dev/null
 jq -e '.browser_specific_settings.gecko.strict_min_version | type == "string" and length > 0' "$MANIFEST" >/dev/null
 jq -e '.permissions | index("contextMenus")' "$MANIFEST" >/dev/null
 jq -e '.permissions | index("storage")' "$MANIFEST" >/dev/null
