@@ -282,16 +282,39 @@ function buildDefinitionLayout(definition) {
 }
 
 function splitDefinitionLines(definition) {
-  const rawLines = String(definition || '').replace(/\n/g, '<br>').split(/<br\s*\/?>/i);
+  const rawLines = String(definition || '').split(/(?:\r?\n|<br\s*\/?>)/gi);
   return rawLines
-    .map((line) => decodeHtml(line.trim()))
+    .map((line) => decodeHtmlEntities(line.trim()))
     .filter(Boolean);
 }
 
-function decodeHtml(value) {
-  const textarea = document.createElement('textarea');
-  textarea.innerHTML = value;
-  return textarea.value;
+function decodeHtmlEntities(value) {
+  return value.replace(/&(#x?[0-9a-fA-F]+|amp|lt|gt|quot|apos|#39|nbsp);/g, (entity, code) => {
+    switch (code.toLowerCase()) {
+      case 'amp':
+        return '&';
+      case 'lt':
+        return '<';
+      case 'gt':
+        return '>';
+      case 'quot':
+        return '"';
+      case 'apos':
+      case '#39':
+        return "'";
+      case 'nbsp':
+        return ' ';
+      default:
+        if (code[0] === '#') {
+          const isHex = code[1].toLowerCase() === 'x';
+          const numeric = parseInt(code.slice(isHex ? 2 : 1), isHex ? 16 : 10);
+          if (!Number.isNaN(numeric)) {
+            return String.fromCodePoint(numeric);
+          }
+        }
+        return entity;
+    }
+  });
 }
 
 function createMeaningBlock(partOfSpeech) {
@@ -444,7 +467,7 @@ function injectStylesOnce() {
   }
   styleInjected = true;
   const style = document.createElement('style');
-  style.innerHTML = `
+  style.textContent = `
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(8px) scale(0.98); }
       to { opacity: 1; transform: translateY(0) scale(1); }

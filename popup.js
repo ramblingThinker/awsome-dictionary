@@ -29,7 +29,7 @@ async function searchWord() {
 
   try {
     const response = await browser.runtime.sendMessage({ action: 'define', word });
-    resultDiv.innerHTML = response.definition.replace(/\n/g, '<br>');
+    renderMultilineText(resultDiv, response.definition);
     await loadHistory();
   } catch (error) {
     resultDiv.textContent = 'Unable to fetch definition right now.';
@@ -38,11 +38,22 @@ async function searchWord() {
   }
 }
 
+function renderMultilineText(container, text) {
+  container.textContent = '';
+  const lines = String(text || '').split('\n');
+  lines.forEach((line, index) => {
+    if (index > 0) {
+      container.appendChild(document.createElement('br'));
+    }
+    container.appendChild(document.createTextNode(line));
+  });
+}
+
 async function loadHistory() {
   try {
     const history = await browser.runtime.sendMessage({ action: 'get_history' });
     const historyList = document.getElementById('history-list');
-    historyList.innerHTML = '';
+    historyList.replaceChildren();
     for (const word of history) {
       const li = document.createElement('li');
       li.textContent = word;
@@ -63,7 +74,7 @@ async function clearHistory() {
 }
 
 const style = document.createElement('style');
-style.innerHTML = `
+style.textContent = `
   #top-row {
     display: flex;
     align-items: center;

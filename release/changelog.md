@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.5
+- Updated Firefox minimum versions for `data_collection_permissions` compatibility:
+  - Desktop `gecko.strict_min_version` to `140.0`
+  - Android `gecko_android.strict_min_version` to `142.0`
+- Replaced unsafe `innerHTML` usage in popup definition rendering with safe DOM text rendering.
+- Replaced `textarea.innerHTML` entity decoding in content script with explicit entity decoding.
+- Replaced remaining static style injection from `innerHTML` to `textContent`.
+- Added stricter manifest validation for Firefox desktop/android minimum version values.
+
 ## 1.1.4
 - Added required Firefox data consent key: `browser_specific_settings.gecko.data_collection_permissions`.
 - Added manifest validation check for Gecko `data_collection_permissions.required`.
