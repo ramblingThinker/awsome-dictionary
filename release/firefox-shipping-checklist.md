@@ -20,8 +20,10 @@ Use this checklist before each AMO submission.
 ## 4) AMO submit
 1. Go to [addons.mozilla.org](https://addons.mozilla.org/) developer hub.
 2. Upload `dist/awesome-dictionary-<version>-firefox.zip`.
-3. Paste store description and reviewer notes from `release/`.
-4. Submit for review.
+3. If using GitHub Actions artifacts, extract the downloaded artifact zip first, then upload the inner extension zip.
+4. For tag builds, prefer the zip attached to the GitHub Release asset (already the correct file).
+5. Paste store description and reviewer notes from `release/`.
+6. Submit for review.
 
 ## 5) Post-submit
 1. Track reviewer feedback and respond using templates in `release/amo-review-response-templates.md`.
