@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.3
+- Added required Firefox MV3 add-on ID in `browser_specific_settings.gecko.id`.
+- Added manifest validation check for required Gecko add-on ID.
+
 ## 1.1.2
 - Switched release packaging output to `.xpi` to reduce AMO upload confusion.
 - Updated GitHub Actions release workflow to upload/publish `.xpi` artifacts on tag builds.
