@@ -17,10 +17,12 @@ fi
 
 NAME="$(jq -r '.name' "$MANIFEST" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')"
 VERSION="$(jq -r '.version' "$MANIFEST")"
-ARTIFACT="$DIST_DIR/${NAME}-${VERSION}-firefox.zip"
+ARTIFACT="$DIST_DIR/${NAME}-${VERSION}-firefox.xpi"
+LEGACY_ARTIFACT="$DIST_DIR/${NAME}-${VERSION}-firefox.zip"
 
 mkdir -p "$DIST_DIR"
 rm -f "$ARTIFACT"
+rm -f "$LEGACY_ARTIFACT"
 
 (
   cd "$ROOT_DIR"

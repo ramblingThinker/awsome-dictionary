@@ -31,15 +31,15 @@ jobs:
         id: version
         run: echo "version=$(jq -r '.version' manifest.json)" >> "$GITHUB_OUTPUT"
 
-      - name: Upload Firefox ZIP artifact
+      - name: Upload Firefox XPI artifact
         uses: actions/upload-artifact@v4
         with:
           name: firefox-extension-${{ steps.version.outputs.version }}
-          path: dist/*.zip
+          path: dist/*.xpi
           if-no-files-found: error
 
-      - name: Publish ZIP to GitHub Release (tag builds)
+      - name: Publish XPI to GitHub Release (tag builds)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.zip
+          files: dist/*.xpi

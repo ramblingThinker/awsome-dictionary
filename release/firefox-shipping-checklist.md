@@ -9,7 +9,7 @@ Use this checklist before each AMO submission.
 
 ## 2) Quality gate
 1. Run `npm run ship:firefox`.
-2. Confirm zip artifact exists in `dist/` and includes only extension runtime files.
+2. Confirm `.xpi` artifact exists in `dist/` and includes only extension runtime files.
 
 ## 3) AMO listing assets
 1. Summary + long description: `release/amo-description.md`.
@@ -19,9 +19,9 @@ Use this checklist before each AMO submission.
 
 ## 4) AMO submit
 1. Go to [addons.mozilla.org](https://addons.mozilla.org/) developer hub.
-2. Upload `dist/awesome-dictionary-<version>-firefox.zip`.
-3. If using GitHub Actions artifacts, extract the downloaded artifact zip first, then upload the inner extension zip.
-4. For tag builds, prefer the zip attached to the GitHub Release asset (already the correct file).
+2. Upload `dist/awesome-dictionary-<version>-firefox.xpi`.
+3. If using GitHub Actions artifacts, extract the downloaded artifact zip first, then upload the inner `.xpi` file.
+4. For tag builds, prefer the `.xpi` attached to the GitHub Release asset (already the correct file).
 5. Paste store description and reviewer notes from `release/`.
 6. Submit for review.
 
