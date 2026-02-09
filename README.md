@@ -51,6 +51,8 @@ This project is licensed under the MIT License. See `/Users/ramblingthinker/Docu
 - AMO description: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/amo-description.md`
 - Changelog: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/changelog.md`
 - Screenshots list: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/screenshots.md`
+- Reviewer notes: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/amo-review-notes.md`
+- Reviewer reply templates: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/amo-review-response-templates.md`
 
 ## Thanks
 Special thanks to the creator of [Free Dictionary API](https://github.com/meetDeveloper/freeDictionaryAPI/tree/master), which powers the core dictionary lookups in this project.
