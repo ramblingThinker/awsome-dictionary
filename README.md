@@ -1,4 +1,4 @@
-# firefox-dictionary-ext
+# awsome-dictionary
 
 Firefox extension for quick dictionary lookups from selected text or popup search.
 
@@ -20,17 +20,23 @@ Firefox extension for quick dictionary lookups from selected text or popup searc
    ```bash
    npm run check
    ```
+4. Create Firefox upload zip:
+   ```bash
+   npm run package:firefox
+   ```
 
 ## Scripts
 - `npm run lint`: runs ESLint against all JavaScript files.
 - `npm run test`: runs manifest validation and unit tests for background and content behavior.
 - `npm run check`: runs lint and test in sequence.
+- `npm run package:firefox`: builds the AMO upload zip in `dist/`.
+- `npm run ship:firefox`: runs checks, then builds the AMO upload zip.
 
 ## Load in Firefox
 1. Open `about:debugging`.
 2. Click `This Firefox`.
 3. Click `Load Temporary Add-on...`.
-4. Select `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/manifest.json`.
+4. Select `/Users/ramblingthinker/Documents/Github/awsome-dictionary/manifest.json`.
 
 ## Settings
 - Open the popup and click `Settings`, or open extension preferences from `about:addons`.
@@ -45,14 +51,14 @@ Firefox extension for quick dictionary lookups from selected text or popup searc
 - The extension does not require user accounts and does not intentionally collect personal identity data.
 
 ## License
-This project is licensed under the MIT License. See `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/LICENSE`.
+This project is licensed under the MIT License. See `/Users/ramblingthinker/Documents/Github/awsome-dictionary/LICENSE`.
 
 ## Release assets
-- AMO description: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/amo-description.md`
-- Changelog: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/changelog.md`
-- Screenshots list: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/screenshots.md`
-- Reviewer notes: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/amo-review-notes.md`
-- Reviewer reply templates: `/Users/ramblingthinker/Documents/Github/firefox-dictionary-ext/release/amo-review-response-templates.md`
+- AMO description: `/Users/ramblingthinker/Documents/Github/awsome-dictionary/release/amo-description.md`
+- Changelog: `/Users/ramblingthinker/Documents/Github/awsome-dictionary/release/changelog.md`
+- Screenshots list: `/Users/ramblingthinker/Documents/Github/awsome-dictionary/release/screenshots.md`
+- Reviewer notes: `/Users/ramblingthinker/Documents/Github/awsome-dictionary/release/amo-review-notes.md`
+- Reviewer reply templates: `/Users/ramblingthinker/Documents/Github/awsome-dictionary/release/amo-review-response-templates.md`
 
 ## Thanks
 Special thanks to the creator of [Free Dictionary API](https://github.com/meetDeveloper/freeDictionaryAPI/tree/master), which powers the core dictionary lookups in this project.
