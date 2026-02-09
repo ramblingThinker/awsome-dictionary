@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2
+- Switched release packaging output to `.xpi` to reduce AMO upload confusion.
+- Updated GitHub Actions release workflow to upload/publish `.xpi` artifacts on tag builds.
+- Added release tagging helper scripts and release checklist updates for consistent shipping.
+
 ## 1.1.0
 - Added modernized in-page definition bubble UI with improved content separation.
 - Added settings page for timeout, auto-close behavior, context menu toggle, and history size.
