@@ -19,6 +19,9 @@ Awesome Dictionary provides quick dictionary definitions for user-selected words
     - cached definitions used for outage fallback
 - `host_permissions: https://api.dictionaryapi.dev/*`
   - Required to fetch dictionary definitions from the selected API provider.
+- `nativeMessaging`
+  - Used on macOS only, when a local native host is installed, to read definitions from the macOS Dictionary source.
+  - If no native host is installed or it fails, the add-on falls back to the API request flow.
 
 ## Data handling and privacy
 - Stored locally in browser extension storage:

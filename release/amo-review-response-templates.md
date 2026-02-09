@@ -5,6 +5,9 @@ Use these snippets when AMO asks for clarification.
 ## 1) Why do you need remote access?
 This add-on is a dictionary tool and needs remote access to retrieve definitions from `https://api.dictionaryapi.dev/*`. Requests are user-initiated only (selected word or typed search).
 
+## 1b) Why do you need `nativeMessaging`?
+`nativeMessaging` is used only on macOS, and only when an optional local native host is installed by the user. It enables local dictionary lookups from the macOS Dictionary source. If unavailable, the add-on falls back to API lookup.
+
 ## 2) Why is `storage` permission required?
 `storage` is used only for local extension functionality:
 - settings (bubble behavior, context menu toggle, history size)

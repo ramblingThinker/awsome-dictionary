@@ -6,13 +6,15 @@ import vm from "node:vm";
 const backgroundPath = new URL("../background.js", import.meta.url);
 const backgroundSource = await fs.readFile(backgroundPath, "utf8");
 
-function createHarness({ fetchImpl, storageSeed = {} } = {}) {
+function createHarness({ fetchImpl, storageSeed = {}, runtimeOverrides = {} } = {}) {
   const localStore = JSON.parse(JSON.stringify(storageSeed));
   const browser = {
     runtime: {
       onInstalled: { addListener() {} },
       onStartup: { addListener() {} },
-      onMessage: { addListener() {} }
+      onMessage: { addListener() {} },
+      getPlatformInfo: runtimeOverrides.getPlatformInfo,
+      sendNativeMessage: runtimeOverrides.sendNativeMessage
     },
     storage: {
       local: {
@@ -125,4 +127,86 @@ test("getFullDefinition returns unavailable source when no cache exists and fetc
   const result = await context.getFullDefinition("absent");
   assert.equal(result.source, "unavailable");
   assert.match(result.definition, /Unable to fetch definition right now\./);
+});
+
+test("getFullDefinition uses macOS native host when available", async () => {
+  const { context } = createHarness({
+    fetchImpl: async () => {
+      throw new Error("API should not be used when native lookup succeeds");
+    },
+    runtimeOverrides: {
+      async getPlatformInfo() {
+        return { os: "mac" };
+      },
+      async sendNativeMessage() {
+        return {
+          ok: true,
+          word: "test",
+          definition: "A trial or examination."
+        };
+      }
+    }
+  });
+
+  const result = await context.getFullDefinition("test");
+  assert.equal(result.source, "native");
+  assert.match(result.definition, /TEST/);
+  assert.match(result.definition, /A trial or examination\./);
+});
+
+test("checkNativeHost returns not_macos when platform is not macOS", async () => {
+  const { context } = createHarness({
+    runtimeOverrides: {
+      async getPlatformInfo() {
+        return { os: "linux" };
+      }
+    }
+  });
+
+  const result = await context.checkNativeHost();
+  assert.equal(result.ok, false);
+  assert.equal(result.status, "not_macos");
+});
+
+test("checkNativeHost returns connected when native host responds", async () => {
+  const { context } = createHarness({
+    runtimeOverrides: {
+      async getPlatformInfo() {
+        return { os: "mac" };
+      },
+      async sendNativeMessage() {
+        return { ok: true };
+      }
+    }
+  });
+
+  const result = await context.checkNativeHost();
+  assert.equal(result.ok, true);
+  assert.equal(result.status, "connected");
+});
+
+test("getFullDefinition formats dense native dictionary text into readable lines", async () => {
+  const { context } = createHarness({
+    fetchImpl: async () => {
+      throw new Error("API should not be used when native lookup succeeds");
+    },
+    runtimeOverrides: {
+      async getPlatformInfo() {
+        return { os: "mac" };
+      },
+      async sendNativeMessage() {
+        return {
+          ok: true,
+          definition: "his | hɪz, ɪz | possessive determiner 1 belonging to a male person. 2 (His) used in titles. PHRASES his and hers. ORIGIN Old English."
+        };
+      }
+    }
+  });
+
+  const result = await context.getFullDefinition("his");
+  assert.equal(result.source, "native");
+  assert.match(result.definition, /^HIS<br>\/hɪz, ɪz\//);
+  assert.match(result.definition, /<br>• POSSESSIVE DETERMINER<br>/);
+  assert.match(result.definition, /<br>• PHRASES<br>/);
+  assert.match(result.definition, /<br>• ORIGIN<br>/);
 });
