@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dictionary Settings</title>
+  <style>
+    :root {
+      --bg: #f5fafb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #dbe7ee;
+      --accent: #0ea5a4;
+      --accent-strong: #0f766e;
+    }
+    body {
+      margin: 0;
+      font: 15px/1.5 "Segoe UI", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at 10% -20%, #d1f3ef 0%, var(--bg) 45%);
+    }
+    .wrap {
+      max-width: 760px;
+      margin: 30px auto;
+      padding: 0 20px 30px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+      padding: 24px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+    .grid {
+      margin-top: 22px;
+      display: grid;
+      gap: 14px;
+    }
+    .row {
+      display: grid;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fcfeff;
+    }
+    .row.inline {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    label {
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .hint {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    input[type="number"] {
+      width: 160px;
+      border: 1px solid #c5d8e2;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 14px;
+    }
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-strong);
+    }
+    .actions {
+      margin-top: 18px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    #save {
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    }
+    #reset {
+      color: #0f172a;
+      background: #e2eef4;
+    }
+    #status {
+      font-size: 13px;
+      color: #0f766e;
+      min-height: 18px;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <h1>Dictionary Settings</h1>
+      <p>Control bubble behavior and extension defaults.</p>
+
+      <form id="settings-form" class="grid">
+        <div class="row">
+          <label for="bubbleTimeoutMs">Bubble auto-close timeout (milliseconds)</label>
+          <input id="bubbleTimeoutMs" type="number" min="0" max="60000" step="500">
+          <div class="hint">Set to 0 to keep the bubble open until user interaction closes it.</div>
+        </div>
+
+        <div class="row">
+          <label for="maxHistoryEntries">Max history entries</label>
+          <input id="maxHistoryEntries" type="number" min="5" max="100" step="1">
+          <div class="hint">How many recent words are stored in popup history.</div>
+        </div>
+
+        <div class="row inline">
+          <div>
+            <label for="autoCloseOnSelectionClear">Close bubble when selection is cleared</label>
+            <div class="hint">Hides the bubble as soon as highlighted text is removed.</div>
+          </div>
+          <input id="autoCloseOnSelectionClear" type="checkbox">
+        </div>
+
+        <div class="row inline">
+          <div>
+            <label for="autoCloseOnInteraction">Close bubble on page interaction</label>
+            <div class="hint">Scroll, key press, resize, or outside click will close it.</div>
+          </div>
+          <input id="autoCloseOnInteraction" type="checkbox">
+        </div>
+
+        <div class="row inline">
+          <div>
+            <label for="enableContextMenu">Enable right-click context menu</label>
+            <div class="hint">Shows “Define '%s'” when selecting text.</div>
+          </div>
+          <input id="enableContextMenu" type="checkbox">
+        </div>
+      </form>
+
+      <div class="actions">
+        <button id="save" type="button">Save Settings</button>
+        <button id="reset" type="button">Reset Defaults</button>
+        <span id="status"></span>
+      </div>
+    </section>
+  </main>
+  <script src="options.js"></script>
+</body>
+</html>

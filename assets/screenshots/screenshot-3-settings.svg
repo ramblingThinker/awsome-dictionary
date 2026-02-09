@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <rect width="1280" height="800" fill="#ecfeff"/>
+  <rect x="190" y="70" width="900" height="660" rx="20" fill="#ffffff" stroke="#cfe0ea"/>
+  <text x="240" y="140" font-size="40" font-family="Segoe UI, sans-serif" fill="#0f172a">Dictionary Settings</text>
+  <rect x="240" y="190" width="800" height="88" rx="12" fill="#fcfeff" stroke="#dbe7ee"/>
+  <text x="264" y="228" font-size="20" font-family="Segoe UI, sans-serif" fill="#334155">Bubble auto-close timeout (milliseconds)</text>
+  <rect x="264" y="240" width="190" height="28" rx="8" fill="#ffffff" stroke="#c5d8e2"/>
+  <text x="280" y="260" font-size="15" font-family="Segoe UI, sans-serif" fill="#475569">10000</text>
+  <rect x="240" y="300" width="800" height="88" rx="12" fill="#fcfeff" stroke="#dbe7ee"/>
+  <text x="264" y="345" font-size="20" font-family="Segoe UI, sans-serif" fill="#334155">Max history entries</text>
+  <rect x="264" y="350" width="190" height="28" rx="8" fill="#ffffff" stroke="#c5d8e2"/>
+  <text x="280" y="370" font-size="15" font-family="Segoe UI, sans-serif" fill="#475569">50</text>
+  <rect x="240" y="570" width="140" height="46" rx="10" fill="#0ea5a4"/>
+  <text x="278" y="599" font-size="18" font-family="Segoe UI, sans-serif" fill="#ffffff">Save</text>
+  <text x="60" y="744" font-size="28" font-family="Segoe UI, sans-serif" fill="#334155">Screenshot 3: Settings page</text>
+</svg>

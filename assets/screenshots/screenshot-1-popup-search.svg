@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <rect width="1280" height="800" fill="#eef6fa"/>
+  <rect x="850" y="80" width="360" height="620" rx="18" fill="#ffffff" stroke="#cfe0ea"/>
+  <text x="890" y="140" font-size="36" font-family="Segoe UI, sans-serif" fill="#1f2937">Dictionary</text>
+  <rect x="885" y="170" width="220" height="52" rx="10" fill="#f8fafc" stroke="#dbe7ee"/>
+  <rect x="1118" y="170" width="70" height="52" rx="10" fill="#0ea5a4"/>
+  <text x="1134" y="203" font-size="18" font-family="Segoe UI, sans-serif" fill="#ffffff">Search</text>
+  <rect x="885" y="250" width="300" height="140" rx="12" fill="#ffffff" stroke="#dbe7ee"/>
+  <text x="902" y="287" font-size="24" font-family="Segoe UI, sans-serif" fill="#0f172a">EXAMPLE</text>
+  <text x="902" y="325" font-size="17" font-family="Segoe UI, sans-serif" fill="#334155">/ɪɡˈzɑːmpəl/</text>
+  <text x="902" y="355" font-size="15" font-family="Segoe UI, sans-serif" fill="#475569">NOUN: a representative case.</text>
+  <text x="60" y="744" font-size="28" font-family="Segoe UI, sans-serif" fill="#334155">Screenshot 1: Popup search experience</text>
+</svg>
