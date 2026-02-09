@@ -27,4 +27,5 @@ Use this checklist before each AMO submission.
 
 ## 5) Post-submit
 1. Track reviewer feedback and respond using templates in `release/amo-review-response-templates.md`.
-2. Tag release in git after approval.
+2. Create release tag from `manifest.json` version: `npm run release:tag`.
+3. Push release tag: `npm run release:tag:push`.

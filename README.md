@@ -31,6 +31,8 @@ Firefox extension for quick dictionary lookups from selected text or popup searc
 - `npm run check`: runs lint and test in sequence.
 - `npm run package:firefox`: builds the AMO upload zip in `dist/`.
 - `npm run ship:firefox`: runs checks, then builds the AMO upload zip.
+- `npm run release:tag`: creates `v<manifest version>` git tag.
+- `npm run release:tag:push`: creates and pushes `v<manifest version>` git tag.
 
 ## Load in Firefox
 1. Open `about:debugging`.

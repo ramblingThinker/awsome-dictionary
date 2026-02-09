@@ -8,7 +8,9 @@
     "test": "bash ./scripts/validate.sh && node --test ./tests/*.test.mjs",
     "check": "npm run lint && npm run test",
     "package:firefox": "bash ./scripts/package-firefox.sh",
-    "ship:firefox": "npm run check && npm run package:firefox"
+    "ship:firefox": "npm run check && npm run package:firefox",
+    "release:tag": "bash ./scripts/tag-release.sh",
+    "release:tag:push": "bash ./scripts/tag-release.sh --push"
   },
   "devDependencies": {
     "eslint": "^9.21.0",
