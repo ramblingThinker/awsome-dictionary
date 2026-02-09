@@ -1,0 +1,36 @@
+name: Firefox Package
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build Firefox package
+        run: npm run ship:firefox
+
+      - name: Read package version
+        id: version
+        run: echo "version=$(jq -r '.version' manifest.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Firefox ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-extension-${{ steps.version.outputs.version }}
+          path: dist/*.zip
+          if-no-files-found: error
